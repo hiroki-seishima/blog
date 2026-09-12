@@ -28,7 +28,7 @@ public class PostService {
 		return postRepository.save(post);  //DBに保存
 	}
 	
-	public List<Post> funndPublished(){ //PostRepositoryのfindByStatusメソッドを使って、PUBLISHED(公開済み)の記事だけを取得。公開済みの記事だけを一覧表示したいという要件を表現
+	public List<Post> findPublished(){ //PostRepositoryのfindByStatusメソッドを使って、PUBLISHED(公開済み)の記事だけを取得。公開済みの記事だけを一覧表示したいという要件を表現
 		return postRepository.findByStatus(PostStatus.PUBLISHED); 
 	}
 }
