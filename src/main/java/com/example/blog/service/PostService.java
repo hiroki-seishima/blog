@@ -31,4 +31,28 @@ public class PostService {
 	public List<Post> findPublished(){ //PostRepositoryのfindByStatusメソッドを使って、PUBLISHED(公開済み)の記事だけを取得。公開済みの記事だけを一覧表示したいという要件を表現
 		return postRepository.findByStatus(PostStatus.PUBLISHED); 
 	}
+	
+	//1件取得
+	public Post findById(Long id) {
+		return postRepository.findById(id) //postRepository.findById(id)は、JpaRepositoryが最初から持っている機能。ただし戻り値はPostではなくOptional<Post>という「値があるかもしれないし、ないかもしれない箱」型で返ってきます。
+			.orElseThrow(() -> new RuntimeException("記事がみつかりません: id=" + id)); //.orElseThrow(...) — 「もし中身が空だったら（＝該当idの記事がなければ）、例外を投げる」という意味。存在しないidを指定された時に備えたエラーハンドリングです。
+	}
+	//更新
+	public Post update(Long id,String title,String content) {
+		Post post = findById(id);
+		post.setTitle(title);
+		post.setContent(content);
+		return postRepository.save(post);
+	}
+	//削除
+	public void delete(Long id) {
+		Post post = findById(id);
+		postRepository.delete(post);
+	}
+	//公開する
+	public Post publish(Long id) {
+		Post post = findById(id);
+		post.setStatus(PostStatus.PUBLISHED);
+		return postRepository.save(post);
+	}
 }

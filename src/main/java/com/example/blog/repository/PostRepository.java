@@ -8,7 +8,7 @@ import java.util.List;  //リスト
 public interface PostRepository extends JpaRepository<Post, Long> {  //JpaRepositoryという、Spring Data JPAが用意している「DB操作の基本機能一式」を継承。また、<対象のEntity, そのEntityの主キーの型>
 	//この形は決まり
 
-	//これらが自動で反映
+	//これらのメソッドが自動で反映
 	//postRepository.save(post);          // 保存・更新
 	//postRepository.findById(1L);        // idで1件検索
 	//postRepository.findAll();           // 全件取得
@@ -22,9 +22,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {  //JpaReposi
 //	findByTitleContaining(String keyword);               // タイトルに部分一致
 //	findByCreatedAtAfter(LocalDateTime date);            // 指定日時より後の記事
 //	findByStatusAndTitleContaining(PostStatus status, String keyword); // 複数条件
-	
-	
-	
 }
 
 
