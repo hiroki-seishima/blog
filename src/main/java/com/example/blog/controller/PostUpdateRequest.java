@@ -1,5 +1,7 @@
 package com.example.blog.controller;
 
+//リクエストの受け皿
+
 public class PostUpdateRequest {
 
 	private String title;
