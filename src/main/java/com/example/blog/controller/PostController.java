@@ -1,4 +1,5 @@
 package com.example.blog.controller;
+//記事に関するリクエストの窓口
 
 import com.example.blog.entity.Post;
 import com.example.blog.service.PostService;

@@ -1,5 +1,6 @@
 package com.example.blog.controller;
 // リクエストの受け皿
+//会員登録・ログインで受け取るデータ（username, password）の入れ物
 
 public class AuthRequest {
 	private String username;
