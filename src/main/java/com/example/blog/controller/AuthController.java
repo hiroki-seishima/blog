@@ -21,4 +21,10 @@ public class AuthController {
 		return UserResponse.from(user);
 	}
 	
+	@PostMapping("/login")
+	public TokenResponse login(@RequestBody AuthRequest req ) {
+		String token = authService.login(req.getUsername(),req.getPassword());
+		return new TokenResponse(token);
+	}
+	
 }

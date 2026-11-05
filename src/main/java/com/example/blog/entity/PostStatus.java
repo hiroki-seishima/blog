@@ -1,4 +1,4 @@
-package com.example.blog.entity;
+package com.example.blog.entity; // 記事の状態のenum
 
 public enum PostStatus { //普通にStringだと自由に文字を入れられるため、タイポ（入力ミスや打ち間違いのこと）を避けるためにPostStatus型を設定。
 	DRAFT, //下書き状態

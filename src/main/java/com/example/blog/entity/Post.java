@@ -1,4 +1,4 @@
-package com.example.blog.entity;
+package com.example.blog.entity; //テーブル　記事
 
 import jakarta.persistence.*;  //JPA（DBとJavaオブジェクトを対応させる仕組み）
 import java.time.LocalDateTime;  //日時を扱うためのJavaの標準クラス。

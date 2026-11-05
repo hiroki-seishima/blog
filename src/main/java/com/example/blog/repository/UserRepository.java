@@ -1,6 +1,6 @@
-package com.example.blog.repository;
+package com.example.blog.repository; // DB操作の手段だけを提供　ユーザーのDB操作
 
-import com.example.blog.entity.User;  //未作成
+import com.example.blog.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

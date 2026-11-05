@@ -1,4 +1,4 @@
-package com.example.blog.entity;
+package com.example.blog.entity; // 権限のenum
 
 public enum UserRole {
 	ADMIN, //管理者

@@ -1,4 +1,4 @@
-package com.example.blog.repository;//DB操作の手段だけを提供
+package com.example.blog.repository;//DB操作の手段だけを提供　記事のDB操作
 
 import com.example.blog.entity.Post; //Post.javaと連携
 import com.example.blog.entity.PostStatus; //PostStatus.javaと連携

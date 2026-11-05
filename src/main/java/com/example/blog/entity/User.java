@@ -1,4 +1,4 @@
-package com.example.blog.entity;
+package com.example.blog.entity; // テーブル　ユーザー
 
 import jakarta.persistence.*;
 
