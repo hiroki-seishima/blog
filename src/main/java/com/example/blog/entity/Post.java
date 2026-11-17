@@ -6,7 +6,7 @@ import java.time.LocalDateTime;  //日時を扱うためのJavaの標準クラ�
 //クラスレベル
 @Entity //このクラスはDBのテーブルに対応するデータの型ですよ」とSpringに伝えるアノテーション
 @Table(name="posts")  //DBテーブル名
-public class Post {
+public class Post { //DBに保存するデータの形（authorにUser丸ごと持つ）
 
 	//フィールドレベル
 	//idフィールド
@@ -26,6 +26,11 @@ public class Post {
 	@Enumerated(EnumType.STRING) //enum型を、DBには文字列として保存するよう指定。enumとは（列举型、Enumerationの略）。決まった選択肢の中からしか値を選べない型を作るためのJavaの機能。
 	private PostStatus status; //PostStatusはenum型　記事の状態（公開か非公開かとか）
 	private LocalDateTime createdAt; //作成日、投稿日時
+	
+	//Authorフィールド（この記事を書いた人）
+	@ManyToOne(fetch = FetchType.LAZY)//多数１：１人のユーザーが、複数の記事を書ける
+	@JoinColumn(name = "author_id",nullable = false)//postsテーブルに作る、usersを指す外部キーの列名
+	private User author;// 記事をかいた投稿者
 	
 	// getterとsetterはフィールド毎に必須
 	public Long getId() {
@@ -57,5 +62,11 @@ public class Post {
 	}
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt=createdAt;
+	}
+	public User getAuthor() {
+		return author;
+	}
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 }
