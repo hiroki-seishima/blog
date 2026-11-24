@@ -33,8 +33,8 @@ public class PostController {
 	}
 	//1件取得
 	@GetMapping("/{id}")
-	public PostResponse getById(@PathVariable Long id) { //@PathVariable Long id -> URLの{id}の部分を受け取るアノテーション。例えば/api/posts/1にアクセスすると、idに1が入ります。
-		return PostResponse.from(postService.findById(id));
+	public PostResponse getById(@PathVariable Long id,Authentication authentication) { //@PathVariable Long id -> URLの{id}の部分を受け取るアノテーション。例えば/api/posts/1にアクセスすると、idに1が入ります。
+		return PostResponse.from(postService.findForView(id,authentication.getName()));
 	}
 	//更新
 	@PutMapping("/{id}")
@@ -47,7 +47,7 @@ public class PostController {
 		postService.delete(id,authentication.getName());
 	}
 	//公開する
-	@PutMapping("/{id}/publish")
+	@PutMapping("/{id}/publish") //
 	public PostResponse publish(@PathVariable Long id,Authentication authentication) {
 		return PostResponse.from(postService.publish(id,authentication.getName()));
 	}

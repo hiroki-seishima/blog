@@ -49,7 +49,7 @@ public class JwtUtil {
 			return true;
 		}catch (JwtException | IllegalArgumentException e) {
 			return false;
-		}	
+		}
 	}
 	private Claims parseClaims(String token) {
 		return Jwts.parser()

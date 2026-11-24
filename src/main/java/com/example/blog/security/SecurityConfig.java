@@ -28,9 +28,9 @@ public class SecurityConfig {
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //Spring Securityがセッションを作成・利用しないよう設定
 			.headers(h -> h.frameOptions(f -> f.sameOrigin())) //自分のサイト内からのiframe表示を許可
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/auth/**", "/h2-console/**","/error").permitAll() //指定URLは誰でもアクセスできるよう設定
-				.requestMatchers(HttpMethod.GET, "/api/posts").permitAll() //指定URLは誰でもアクセスできるよう設定
-				.anyRequest().authenticated()) //それ以外のURLは認証済みユーザーのみアクセスできる設定
+				.requestMatchers("/api/auth/**", "/h2-console/**","/error").permitAll() //指定URLは誰でもアクセスできるよう設定。認証APIとH2データベースコンソール、エラーページ
+				.requestMatchers(HttpMethod.GET, "/api/posts").permitAll() //指定URLは誰でもアクセスできるよう設定。GETのページのapi/postsのページは誰でも許可。
+				.anyRequest().authenticated()) //それ以外のURLは認証済みユーザーのみアクセスできる設定。
 			.exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); //JWT検証フィルターを、ユーザー名・パスワード認証フィルターより前に実行する。
 		return http.build();
