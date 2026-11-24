@@ -24,12 +24,12 @@ public class PostController {
 	public PostResponse create(@RequestBody PostCreateRequest req,Authentication authentication) {  //リクエストのJSONデータ（{"title": "...", "content": "..."}）を、自動的にPostCreateRequestというJavaオブジェクトに変換。
 		//＠Requestbodyが「HTTPリクエストのBody（本文）に入っているJSONデータを、指定した型のJavaオブジェクトに自動変換してください」とSpringに伝えるアノテーションです。reqは自分でつけた変数名
 		Post post = postService.create(req.getTitle(), req.getContent(), authentication.getName());
-		return PostResponse.from(post); //Serviceに処理を丸投げして、その結果（保存されたPost）をPostResponsenに変換して返す（passwordを含めないため）
+		return PostResponse.from(post); //Serviceに処理を丸投げして、その結果（保存されたPost）をPostResponseに変換して返す（passwordを含めないため）
 	}
 
 	@GetMapping //「HTTPのGETメソッドでリクエストが来たら実行する」という指定。実際にはGET /api/postsに対応。
 	public List<PostResponse> list(){
-		return postService.findPublished().stream().map(PostResponse::from).toList(); //ServiceのfindPublished()を呼んで、公開済みの記事一覧を１件ずつPostResponsenに変換して返す（passwordを含めないため）
+		return postService.findPublished().stream().map(PostResponse::from).toList(); //ServiceのfindPublished()を呼んで、公開済みの記事一覧を１件ずつPostResponseに変換して返す（passwordを含めないため）
 	}
 	//1件取得
 	@GetMapping("/{id}")
@@ -38,18 +38,18 @@ public class PostController {
 	}
 	//更新
 	@PutMapping("/{id}")
-	public PostResponse update(@PathVariable Long id,@RequestBody PostUpdateRequest req) {
-		return PostResponse.from(postService.update(id, req.getTitle(), req.getContent()));
+	public PostResponse update(@PathVariable Long id,@RequestBody PostUpdateRequest req,Authentication authentication) {
+		return PostResponse.from(postService.update(id, req.getTitle(), req.getContent(),authentication.getName()));
 	}
 	//削除
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Long id) {
-		postService.delete(id);
+	public void delete(@PathVariable Long id,Authentication authentication) {
+		postService.delete(id,authentication.getName());
 	}
 	//公開する
 	@PutMapping("/{id}/publish")
-	public PostResponse publish(@PathVariable Long id) {
-		return PostResponse.from(postService.publish(id));
+	public PostResponse publish(@PathVariable Long id,Authentication authentication) {
+		return PostResponse.from(postService.publish(id,authentication.getName()));
 	}
 	// @GetMapping -> データを取得（一覧・詳細）
 	// @PostMapping -> データを新規作成する

@@ -24,16 +24,15 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(csrf -> csrf.disable())
-			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.headers(h -> h.frameOptions(f -> f.sameOrigin()))
+			.csrf(csrf -> csrf.disable())  //csrf（Cross-Site Request Forgery）対策を無効化
+			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //Spring Securityがセッションを作成・利用しないよう設定
+			.headers(h -> h.frameOptions(f -> f.sameOrigin())) //自分のサイト内からのiframe表示を許可
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/posts").permitAll()
-				.anyRequest().authenticated())
+				.requestMatchers("/api/auth/**", "/h2-console/**","/error").permitAll() //指定URLは誰でもアクセスできるよう設定
+				.requestMatchers(HttpMethod.GET, "/api/posts").permitAll() //指定URLは誰でもアクセスできるよう設定
+				.anyRequest().authenticated()) //それ以外のURLは認証済みユーザーのみアクセスできる設定
 			.exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); //JWT検証フィルターを、ユーザー名・パスワード認証フィルターより前に実行する。
 		return http.build();
 	}
-	
 }

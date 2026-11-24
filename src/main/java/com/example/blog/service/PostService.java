@@ -7,6 +7,7 @@ import com.example.blog.entity.User;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime; //日時を扱うためのJavaの標準クラス。
 import java.util.List; //リスト
@@ -46,21 +47,32 @@ public class PostService {
 			.orElseThrow(() -> new RuntimeException("記事が見つかりません: id=" + id)); //.orElseThrow(...) — 「もし中身が空だったら（＝該当idの記事がなければ）、例外を投げる」という意味。存在しないidを指定された時に備えたエラーハンドリングです。
 	}
 	//更新
-	public Post update(Long id,String title,String content) {
+	public Post update(Long id,String title,String content,String username) {
 		Post post = findById(id); //idで記事を取得
+		checkOwner(post,username); //投稿者本人か確認
 		post.setTitle(title); //タイトルをセット
 		post.setContent(content); //本文をセット
 		return postRepository.save(post); //上記の更新のための保存
 	}
 	//削除
-	public void delete(Long id) {
+	public void delete(Long id,String username) {
 		Post post = findById(id); //idで記事を取得
+		checkOwner(post,username);//投稿者本人か確認
 		postRepository.delete(post); //DBから削除
 	}
 	//公開する
-	public Post publish(Long id) {
+	public Post publish(Long id,String username) {
 		Post post = findById(id); //idで記事を取得
+		checkOwner(post,username);//投稿者本人か確認
 		post.setStatus(PostStatus.PUBLISHED); //公開済のステータスをセット
 		return postRepository.save(post); //上記ステータスの更新のための保存
 	}
+	
+	//本人の記事かどうかを確認する（違った場合は例外処理発生）
+	private void checkOwner(Post post, String username) {  //privateはこのクラスのみで使うメソッドって意味
+		if (!post.getAuthor().getUsername().equals(username)) {  //文字列の比較は==ではなくequal()を使用すること。==だと文字の中身ではなく同じ物体かを比較してしまい、正しく比較ができない。
+			throw new AccessDeniedException("他人の記事は操作できません");  // AccessDeniedException は、Spring Securityにある「権限がない」ことを表す例外。RuntimeException の代わりにこれを使うと、本来の 403 Forbidden で返せます。
+		}
+	}
+	
 }
